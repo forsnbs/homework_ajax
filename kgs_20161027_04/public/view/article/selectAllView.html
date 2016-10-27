@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="../../js/article/client.js"></script>
+
+
+<style type="text/css">
+
+	.title_td:hover {
+		color: blue;
+		background-color: gray;
+	}
+		
+</style>
+
+<!-- 글목록 이벤트 핸들링 -->
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		
+		var articles = Controllers.getArticleController().requestSelectAll();
+		
+		if(articles.length === 0) {
+			alert('등록된 글이 없습니다.');
+			return;
+		}
+		
+		for(var i = 0 ; i < articles.length ; i++) {			
+			var td_check = $('<td></td>').html('<input type="checkbox">');
+			var td_num = $('<td></td>').html(articles[i].num);			
+			var td_title = $('<td class="title_td"></td>').html(articles[i].title);
+			var td_writer = $('<td></td>').html(articles[i].writer);
+			var td_readCount = $('<td></td>').html(articles[i].readCount);
+						
+			var tr = $('<tr></tr>');
+			tr.append(td_check, td_num, td_title, td_writer, td_readCount);
+			$('tbody').append(tr);
+		}
+		
+	});
+	
+</script>
+
+<!-- 글쓰기 이벤트 핸들링 -->
+<script>
+
+	$(document).ready(function() {
+		
+		$('#write_button').click(function() {
+			
+// 			아래 코드는 다른 HTML 파일로 화면을 전환한다.
+// 			다만, 아래 코드를 여기서 사용하지는 마라.
+// 			왜냐하면 현재 뷰이고, 뷰에서 화면전환은 MVC 규칙을 위반하기 때문이다.
+// 			document.location = 'writeView.html';
+			
+			//아래 코드는 현재 뷰가 컨트롤러에 글쓰기 화면으로 전환을 요청한다.
+			Controllers.getArticleController().requestWriteView();
+			
+		});
+		
+	});
+
+</script>
+
+<!-- 글조회 이벤트 핸들링 -->
+<script>
+
+	$(document).ready(function() {
+		
+		$('.title_td').click(function() {
+			
+			var num = parseInt($(this).prev().text());
+			var article = Controllers.getArticleController().requestSelectOne(num);
+			
+		});
+		
+	});
+
+</script>
+
+
+</head>
+<body>
+	<!-- 글목록-->
+	<table>
+		<thead>
+			<tr>
+				<th>선택</th>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+		</tbody>
+	</table>
+	<input type="button" id="write_button" value="글쓰기">
+</body>
+</html>
+
+
+
+
+
